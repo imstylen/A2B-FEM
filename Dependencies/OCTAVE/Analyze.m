@@ -162,6 +162,7 @@ for i = 1:ne
     
     beam(i).L = sqrt(beam(i).dx^2+beam(i).dy^2);
     
+    beam(i).typ = ELES(i,4);
     beam(i).E = ELES(i,5);
     beam(i).A = ELES(i,6);
     beam(i).I = ELES(i,7);
