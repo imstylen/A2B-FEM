@@ -1,0 +1,33 @@
+
+---------------------------
+***************************
+A2B Finite Element Modeling
+***************************
+---------------------------
+
+_____________________________
+User Guide:
+_____________________________
+
+After choosing install location, the batch file at the following path must be updated.
+
+"\A2B-FEM\Dependencies\OCTAVE\RunScript.bat"
+
+	"C:\Octave\octave.vbs"
+	Update to reflect the octave install location on your pc.
+
+	run("'C:\0 Projects\A2B-FEM\Dependencies\OCTAVE\Frame.m'")
+	Update to reflect A2B-FEM install location on your pc.
+
+
+
+
+
+_____________________________
+TODO:
+_____________________________
+
+-Loop through all model input files.
+-Create Graphics.
+-Delete input files.
+-Make suitable for girder bracing.

@@ -1,48 +1,58 @@
-clear; clc;close all;
+function [ ] = Analyze( modelName )
+% Performs the analysis for a given model.
+
+close all;
+
+outFile = ["../../1. OUTPUT/" modelName  ".out"]
 
 
-delete( "../../1. OUTPUT/test.out")
-diary "../../1. OUTPUT/test.out"
+delete( outFile )
+diary( outFile )
+
 #----------------------------------------------
 disp("***************************************")
 disp("GEOMETRY") 
 disp("***************************************")
 #----------------------------------------------
 
+nodeFile = ['../../0. INPUT/'  modelName  ".node"];
+
 disp("---------------------------------------")
 disp("Nodal Coordinates: ");
 disp("(Node No. - X - Y - Z)");
 disp("---------------------------------------")
 disp("")
-NODES = load('../../0. INPUT/TestModel1.node')
+NODES = load(nodeFile)
 disp("---------------------------------------")
 disp("");
 
-
+boundFile = ['../../0. INPUT/' modelName  ".bound"];
 disp("---------------------------------------")
 disp("Boundary Conditions: 1 = Restrained, 0 = Free")
 disp("(Node No. - Tx - Ty - Rz)");
 disp("---------------------------------------")
 disp("")
-BOUNDS = load('../../0. INPUT/TestModel1.bound')
+BOUNDS = load(boundFile)
 disp("---------------------------------------")
 disp("");
 
+eleFile = ['../../0. INPUT/'  modelName  ".ele"];
 disp("---------------------------------------")
 disp("Element Information:")
 disp("(Ele No. - iNode - jNode - Member Type - E - A - I)");
 disp("---------------------------------------")
 disp("")
-ELES = load('../../0. INPUT/TestModel1.ele')
+ELES = load(eleFile)
 disp("---------------------------------------")
 disp("");
 
+loadFile = ['../../0. INPUT/'  modelName  ".load"];
 disp("---------------------------------------")
 disp("Load Information:")
 disp("(Node No. - Fx - Fy - Mz)");
 disp("---------------------------------------")
 disp("")
-LOADS = load('../../0. INPUT/TestModel1.load')
+LOADS = load(loadFile)
 disp("---------------------------------------")
 disp("");
 
@@ -72,6 +82,68 @@ CON = ELES(:,2:3)';
 ne = size(CON)(2);
 
 %Analysis -------------------------------------------------------------------------------
+
+%Create model plot
+
+plotFile = ["../../1. OUTPUT/" modelName  ".png"]
+
+figure; 
+hold on;
+
+xMin = min(XYZ(1,:));
+xMax = max(XYZ(1,:));
+
+yMin = min(XYZ(2,:));
+yMax = max(XYZ(2,:));
+
+x0 = (xMax - xMin)/2;
+y0 = (yMax - yMin)/2;
+
+xRange = abs(xMax - xMin);
+yRange = abs(yMax - yMin);
+
+rng = 1.2*max(xRange,yRange);
+
+xMin = x0 - rng/2;
+xMax = x0 + rng/2;
+
+yMin = y0 - rng/2;
+yMax = y0 + rng/2;
+
+
+%Plot nodes
+for i = 1:nn
+  
+  scatter(XYZ(1,i),XYZ(2,i),'k','filled')
+  
+end
+
+%Plot elements
+
+for i = 1:ne
+
+  iN = CON(1,i);
+  jN = CON(2,i);
+
+  iNx = XYZ(1,iN);
+  iNy = XYZ(2,iN);  
+  
+  jNx = XYZ(1,jN);
+  jNy = XYZ(2,jN);
+  
+  line([iNx jNx],[iNy jNy],'color', 'k' )
+  
+end
+
+[xMin xMax yMin yMax]
+axis([xMin xMax yMin yMax]);
+
+title(modelName);
+grid on;
+pbaspect([1,1,1])
+
+saveas(gcf,plotFile)
+close;
 
 #----------------------------------------------
 disp("***************************************")
@@ -304,3 +376,9 @@ disp("---------------------------------------")
 
 
 diary off;
+
+
+
+
+  
+end
