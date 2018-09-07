@@ -6,13 +6,14 @@ model basic -ndm 2 -ndf 3
 # Create nodes
 #    tag        X       Y 
 node  1       0.0       0.0 
-node  2       120.0     0.0 
+node  2       0.0       120.0 
 node  3       120.0     120.0
+node  4		  120.0     0.0
 
 # Fix supports at base of columns
 #    tag   DX   DY   RZ
 fix   1     1    1    1
-
+fix   4     1    1    1
 
 #                tag 
 geomTransf Linear 1  
@@ -20,7 +21,8 @@ geomTransf Linear 1
 # Create the beam elements
 #                          tag ndI ndJ     A       E    Iz   transfTag
 element elasticBeamColumn   1   1   2    3.54    29000  53.8    1
-element elasticBeamColumn   2   1   3    3.54    29000  53.8    1
+element elasticBeamColumn   2   2   3    3.54    29000  53.8    1
+element elasticBeamColumn   3   3   4    3.54    29000  53.8    1
 
 
 
@@ -32,8 +34,8 @@ pattern Plain 1 "Linear" {
 
         # Create nodal loads at nodes 3 & 4
 	#    nd    FX   FY      MZ 
-	load  2   1.0    2.0     3.0
-	load  3   4.0   5.0     6.0
+	load  2   0.0    0.0     500.0
+
     
 }
 
@@ -78,9 +80,9 @@ analysis Static
 # Finally perform the analysis
 # ------------------------------
 
-recorder Node -file nodesRxn.out -node 1 -dof 1 2 3 reaction;
-recorder Element -file ElementGlobalForce.out -ele 1 2 globalForce;
-recorder Element -file ElementLocalForce.out -ele 1 2 localForce;
+recorder Node -file nodesRxn.out -node 1 4 -dof 1 2 3 reaction;
+recorder Element -file ElementGlobalForce.out -ele 1 2 3 globalForce;
+recorder Element -file ElementLocalForce.out -ele 1 2 3 localForce;
 
 # perform the gravity load analysis, requires 10 steps to reach the load level
 analyze 1
