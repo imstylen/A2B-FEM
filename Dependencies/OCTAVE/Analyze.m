@@ -305,7 +305,9 @@ disp("")
 GlobalForces
 disp("---------------------------------------")
 
-%Member end forces (GLOBAL):
+%Member end forces (LOCAL):
+
+MemberLocalOutFile = ['../../FEM/'  modelName  ".csv"];
 
 LocalForces = zeros(ne,7);
 LocalForces(:,1) = ELES(:,1);
@@ -323,6 +325,8 @@ disp("---------------------------------------")
 disp("")
 LocalForces
 disp("---------------------------------------")
+
+csvwrite(MemberLocalOutFile,LocalForces);
 
 %Support Reactions
 
