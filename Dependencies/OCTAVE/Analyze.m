@@ -234,12 +234,20 @@ end
  P = zeros(dof,1);
  nL = size(LOADS)(1);
  
+ fprintf("Number of dof: %i \n",dof)
+ fprintf("Number of loads: %i \n",nL)
+ LOADS
+ 
  for i = 1:nL
   
     for j = 1:3
       
-      deg = degreeID(LOADS(i,1),j);
-      P(deg) = LOADS(i,j+1);
+      if degreeID(LOADS(i,1),j) <= dof
+      
+        deg = degreeID(LOADS(i,1),j)
+        P(deg) = LOADS(i,j+1);
+      
+      end
       
     end
 
@@ -307,7 +315,7 @@ disp("---------------------------------------")
 
 %Member end forces (LOCAL):
 
-MemberLocalOutFile = ['../../FEM/'  modelName  ".csv"];
+
 
 LocalForces = zeros(ne,7);
 LocalForces(:,1) = ELES(:,1);
@@ -325,8 +333,6 @@ disp("---------------------------------------")
 disp("")
 LocalForces
 disp("---------------------------------------")
-
-csvwrite(MemberLocalOutFile,LocalForces);
 
 %Support Reactions
 
@@ -382,7 +388,9 @@ disp("---------------------------------------")
 
 diary off;
 
-
+FEMOutFile = ['../../FEM/'  modelName  ".csv"];
+outData = blkdiag(NodalDisp,LocalForces)
+csvwrite(FEMOutFile,outData);
 
 
   
