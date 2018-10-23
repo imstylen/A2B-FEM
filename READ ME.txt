@@ -16,12 +16,9 @@ After choosing install location for octave, the batch file at the following path
 	"C:\Octave\octave.vbs"
 	Update to reflect the octave install location on your pc.
 
+DOES NOT WORK ON P-DRIVE. COPY TO DESKTOP.
 
 _____________________________
 TODO:
 _____________________________
 
--Loop through all model input files.
--Create Graphics.
--Delete input files.
--Make suitable for girder bracing.
